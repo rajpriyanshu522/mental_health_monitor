@@ -4,7 +4,7 @@
 	font-family: 'Roboto Condensed', sans-serif;
 }
 
-/* navbar */
+
 
 .navbar-nav{
 	margin-right: 0 !important;
@@ -43,7 +43,7 @@
 	color: white !important;
 	padding-top: 80px;
 	padding-bottom: 80px;
-	/* height: 80vh;} */}
+	}
 
 
 .container-banner img{
@@ -51,27 +51,6 @@
  height: auto;
  
 }
-/* #banner-row img{
-	max-width: 70%;
-	height: auto;
-	display: block;
-	padding-left: 30px;
-} */
-
-/* #banner-row h3, p{
-	padding-left: 20px;
-	padding-top: 20px;
-	text-align: center;
-} */
-
-/* /* #banner-row a{
-	background-color:#BDB5D5 !important;
-	color: black !important;
-	border: none; */
-	 /* margin-left: 20px;
-	margin-top: 20px;  */
-	 */
- 
 
 #banner-row .cardlink{
 	position: absolute;
@@ -89,7 +68,7 @@
 #banner-col{
 	padding-left: 20px;
 }
-/* service */
+
 #service{
 	padding-top: 80px;
 	padding-bottom: 80px;
@@ -103,7 +82,7 @@
 	padding-bottom: 70px;
 }
 
-/* about */
+
 
 #about{
 	padding-top: 80px;
@@ -124,7 +103,7 @@
 	
 }
 
-/* product */
+
 
 #product{
 	padding-top: 80px;
@@ -143,7 +122,7 @@
 	padding-top: 15px;
 }
 
-/* social */
+
 
 #social{
 	padding-top: 80px;
@@ -167,14 +146,14 @@ transform: translateY(-10px);
 }
 
 
-/* footer */
+
 
 .mb-3{
 padding-top: 10px;
 }
 
 
-/* media */
+
 @media only screen and (max-width: 987px){
 	.navbar-brand{
 		padding-left: 0px;
