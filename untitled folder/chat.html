@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="index.css">
+    <meta
+      name="viewport"
+      content="width=device-width,
+				initial-scale=1"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <!-- <link rel="stylesheet" href="new.css" /> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <title></title>
+  </head>
+  <body>
+    <div class="body">
+    <section id="navbar">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"> google hacker </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav m-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#service">Services</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#about">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#product">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#social">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </section>
+
+  
+	</head>
+
+	<body>
+		<div id="messages"></div>
+
+		<div id="sendMsg">
+			<input type="text" id="msgTxt" placeholder="ENTER YOUR MSG..." />
+			<input type="submit" id="msgBtn" value="send" onclick="module.sendMsg()" />
+		</div>
+
+		<script>
+			module = {};
+		</script>
+		<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+			import { getDatabase, ref, set, remove, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+			const firebaseConfig = {
+				apiKey: "AIzaSyCMetrunwh30BjlY1QQv8vU4mHxpzpH6tw",
+				authDomain: "coder-f73ec.firebaseapp.com",
+				projectId: "coder-f73ec",
+				storageBucket: "coder-f73ec.appspot.com",
+				messagingSenderId: "489819316356",
+				appId: "1:489819316356:web:6db52b7f895853eff562d1",
+			};
+
+			const app = initializeApp(firebaseConfig);
+			const db = getDatabase(app);
+
+			// variables
+			var msgTxt = document.getElementById("msgTxt");
+			var sender;
+			if (sessionStorage.getItem("sender")) {
+				sender = sessionStorage.getItem("sender");
+			} else {
+				sender = prompt("PLEASE ENTER YOUR NAME");
+				sessionStorage.setItem("sender", sender);
+			}
+
+			// TO SEND MESSAGES
+			module.sendMsg = function sendMsg() {
+				var msg = msgTxt.value;
+				var timestamp = new Date().getTime();
+				set(ref(db, "messages/" + timestamp), {
+					msg: msg,
+					sender: sender,
+				});
+
+				msgTxt.value = "";
+			};
+
+			// TO RECEIVE MSG
+			onChildAdded(ref(db, "messages"), (data) => {
+				if (data.val().sender == sender) {
+					messages.innerHTML +=
+						"<div style=justify-content:end class=outer id=" +
+						data.key +
+						"><div id=inner class=me>you : " +
+						data.val().msg +
+						"<button id=dltMsg onclick=module.dltMsg(" +
+						data.key +
+						")>DELETE</button></div></div>";
+				} else {
+					messages.innerHTML += "<div class=outer id=" + data.key + "><div id=inner class=notMe>" + data.val().sender + " : " + data.val().msg + "</div></div>";
+				}
+			});
+
+			// TO DELETE MSG
+			module.dltMsg = function dltMsg(key) {
+				remove(ref(db, "messages/" + key));
+			};
+
+			// WHEN MSG IS DELETED
+			onChildRemoved(ref(db, "messages"), (data) => {
+				var msgBox = document.getElementById(data.key);
+				messages.removeChild(msgBox);
+			});
+		</script>
+		<!-- Code injected by live-server -->
+		<script>
+			// <![CDATA[  <-- For SVG support
+			if ("WebSocket" in window) {
+				(function () {
+					function refreshCSS() {
+						var sheets = [].slice.call(document.getElementsByTagName("link"));
+						var head = document.getElementsByTagName("head")[0];
+						for (var i = 0; i < sheets.length; ++i) {
+							var elem = sheets[i];
+							var parent = elem.parentElement || head;
+							parent.removeChild(elem);
+							var rel = elem.rel;
+							if ((elem.href && typeof rel != "string") || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+								var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, "");
+								elem.href = url + (url.indexOf("?") >= 0 ? "&" : "?") + "_cacheOverride=" + new Date().valueOf();
+							}
+							parent.appendChild(elem);
+						}
+					}
+					var protocol = window.location.protocol === "http:" ? "ws://" : "wss://";
+					var address = protocol + window.location.host + window.location.pathname + "/ws";
+					var socket = new WebSocket(address);
+					socket.onmessage = function (msg) {
+						if (msg.data == "reload") window.location.reload();
+						else if (msg.data == "refreshcss") refreshCSS();
+					};
+					if (sessionStorage && !sessionStorage.getItem("IsThisFirstTime_Log_From_LiveServer")) {
+						console.log("Live reload enabled.");
+						sessionStorage.setItem("IsThisFirstTime_Log_From_LiveServer", true);
+					}
+				})();
+			} else {
+				console.error("Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.");
+			}
+			// ]]>
+		</script>
+
+          
+    <!-- social -->
+    
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<!-- partial -->
+  <script  src="./script.js"></script>
+   
+  </div>
+  </body>
+</html>
